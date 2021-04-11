@@ -7,6 +7,8 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', 'assets/starfield.png');
         this.load.image('rocket', 'assets/rocket.png');
         this.load.image('spaceship', 'assets/spaceship.png');
+        this.load.spritesheet('explosion', './assets/explosion.png', 
+        {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create() {
@@ -53,6 +55,12 @@ class Play extends Phaser.Scene {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);      
+    
+        this.anims.create({
+            key: 'explode',
+            frames: this.anims.generateFrameNumbers('explosion',
+            {start: 0, end: 9, first: 0}), frameRate: 30
+        });    
     }
 
     update() {
@@ -67,6 +75,15 @@ class Play extends Phaser.Scene {
         this.checkCollision(this.p1Rocket, this.ship3);
     }
 
+    shipExplode(ship) {
+        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        boom.anims.play('explode');
+        boom.on('animationComplete', () => {
+            ship.reset();
+            boom.destroy();
+        });
+    }
+
     checkCollision(rocket, ship) {
         if(rocket.x + rocket.width > ship.x &&
             rocket.x < ship.x + ship.width &&
@@ -74,7 +91,7 @@ class Play extends Phaser.Scene {
             rocket.y < ship.y + ship.height){
                 ship.alpha = 0;
                 rocket.reset();
-                ship.reset();
+                this.shipExplode(ship);
             }
     }
 }
