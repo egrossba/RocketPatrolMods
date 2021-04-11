@@ -78,7 +78,7 @@ class Play extends Phaser.Scene {
     shipExplode(ship) {
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
         boom.anims.play('explode');
-        boom.on('animationComplete', () => {
+        boom.on('animationcomplete', () => {
             ship.reset();
             boom.destroy();
         });
@@ -91,7 +91,7 @@ class Play extends Phaser.Scene {
             rocket.y < ship.y + ship.height){
                 ship.alpha = 0;
                 rocket.reset();
-                this.shipExplode(ship);
+                console.log('ship hit');
             }
     }
 }
