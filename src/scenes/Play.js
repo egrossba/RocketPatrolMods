@@ -50,7 +50,8 @@ class Play extends Phaser.Scene {
         });  
         
         this.p1Score = 0;
-          // display score
+
+        // display score
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -67,6 +68,7 @@ class Play extends Phaser.Scene {
             borderUISize + borderPadding*2, this.p1Score, scoreConfig);
         
         this.gameOver = false;
+
         // 60-second play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
@@ -74,6 +76,24 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+        // display clock
+        let clockConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        let timer = game.settings.gameTimer / 1000;
+
+        this.clockRight = this.add.text(game.config.width - borderPadding*2 - borderUISize*2, 
+            borderUISize + borderPadding*2, timer, clockConfig);
 
     }
 
@@ -101,6 +121,7 @@ class Play extends Phaser.Scene {
             this.ship1.update();           // update spaceships (x3)
             this.ship2.update();
             this.ship3.update();
+            this.timer -= 1;
         } 
     }
 
