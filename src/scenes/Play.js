@@ -94,7 +94,7 @@ class Play extends Phaser.Scene {
         this.timer = game.settings.gameTimer / 1000;
 
         this.clockRight = this.add.text(game.config.width - 140, 
-            borderUISize + borderPadding*2, this.timer, clockConfig);
+            borderUISize + borderPadding*2, ':' + this.timer, clockConfig);
 
         this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.tickTimer, callbackScope: this, loop: true });
     }
@@ -154,7 +154,7 @@ class Play extends Phaser.Scene {
         // update timer
         if(this.timer > 0){
             this.timer -= 1;
-            this.clockRight.text = this.timer;
+            this.clockRight.text = ':' + this.timer;
         }
     }
 }
