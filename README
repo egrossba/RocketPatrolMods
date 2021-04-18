@@ -6,5 +6,5 @@ Mods chosen:
 (20) Implement mouse control for player movement and click to fire
 (20) Implement a new timing/scoring mechanism that adds time to the clock on hits
 (10) Create a new title screen
-(10) Display the time remaining on the screen
+x(10) Display the time remaining on the screen
 (10) Create 4 new explosion SFX and randomize which one plays on impact

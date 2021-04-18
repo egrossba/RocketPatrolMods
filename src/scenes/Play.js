@@ -50,6 +50,7 @@ class Play extends Phaser.Scene {
         });  
         
         this.p1Score = 0;
+        this.scoreDif = 0;
 
         // display score
         let scoreConfig = {
@@ -97,6 +98,8 @@ class Play extends Phaser.Scene {
             borderUISize + borderPadding*2, ':' + this.timer, clockConfig);
 
         this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.tickTimer, callbackScope: this, loop: true });
+    
+        this.timeBonus = this.add.text(game.config.width/2, game.config.height/2, '', this.clockConfig);
     }
 
     update() {
@@ -129,13 +132,24 @@ class Play extends Phaser.Scene {
     shipExplode(ship) {
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
         boom.anims.play('explode');
-        boom.on('animationcomplete', () => {
-            ship.reset();
-            boom.destroy();
-        });
+
         // score add and repaint
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
+
+        // timer add
+        if(this.timer > 0){
+            this.timer += 5;
+            this.clockRight.text = ':' + this.timer;
+            this.timeBonus.text = '+5s';
+        }
+
+        boom.on('animationcomplete', () => {
+            ship.reset();
+            boom.destroy();
+            this.timeBonus.text = '';
+        });
+
         this.sound.play('sfx_explosion');  
     }
 
