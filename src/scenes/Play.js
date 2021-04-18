@@ -81,7 +81,7 @@ class Play extends Phaser.Scene {
         let clockConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
+            backgroundColor: '#FACADE',
             color: '#843605',
             align: 'center',
             padding: {
@@ -90,11 +90,13 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        let timer = game.settings.gameTimer / 1000;
+        
+        this.timer = game.settings.gameTimer / 1000;
 
-        this.clockRight = this.add.text(game.config.width - borderPadding*2 - borderUISize*2, 
-            borderUISize + borderPadding*2, timer, clockConfig);
+        this.clockRight = this.add.text(game.config.width - 140, 
+            borderUISize + borderPadding*2, this.timer, clockConfig);
 
+        this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.tickTimer, callbackScope: this, loop: true });
     }
 
     update() {
@@ -121,7 +123,6 @@ class Play extends Phaser.Scene {
             this.ship1.update();           // update spaceships (x3)
             this.ship2.update();
             this.ship3.update();
-            this.timer -= 1;
         } 
     }
 
@@ -147,5 +148,13 @@ class Play extends Phaser.Scene {
                 rocket.reset();
                 this.shipExplode(ship);
             }
+    }
+
+    tickTimer() {
+        // update timer
+        if(this.timer > 0){
+            this.timer -= 1;
+            this.clockRight.text = this.timer;
+        }
     }
 }
