@@ -50,7 +50,6 @@ class Play extends Phaser.Scene {
         });  
         
         this.p1Score = 0;
-        this.scoreDif = 0;
 
         // display score
         let scoreConfig = {
@@ -98,8 +97,24 @@ class Play extends Phaser.Scene {
             borderUISize + borderPadding*2, ':' + this.timer, clockConfig);
 
         this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.tickTimer, callbackScope: this, loop: true });
-    
-        this.timeBonus = this.add.text(game.config.width/2, game.config.height/2, '', this.clockConfig);
+            
+        let bonusConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '',
+            color: '#DC143C',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+
+        this.timeBonus = this.add.text(game.config.width/2, game.config.height/2, '', bonusConfig);
+        
+        this.hunnit = 1;
+
     }
 
     update() {
@@ -138,10 +153,15 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score;
 
         // timer add
-        if(this.timer > 0){
+        console.log(this.p1Score/100);
+        console.log(this.hunnit);
+        if(this.timer > 0 && this.p1Score/100 >= this.hunnit){
             this.timer += 5;
             this.clockRight.text = ':' + this.timer;
+            this.timeBonus.x = ship.x - 60;
+            this.timeBonus.y = ship.y;
             this.timeBonus.text = '+5s';
+            this.hunnit++;
         }
 
         boom.on('animationcomplete', () => {
