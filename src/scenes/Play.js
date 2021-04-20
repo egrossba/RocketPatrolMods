@@ -52,7 +52,7 @@ class Play extends Phaser.Scene {
         this.p1Score = 0;
 
         // display score
-        let scoreConfig = {
+        this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
@@ -65,18 +65,12 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, 
-            borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+            borderUISize + borderPadding*2, this.p1Score, this.scoreConfig);
         
         this.gameOver = false;
 
-        // 60-second play clock
-        scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
-            this.gameOver = true;
-        }, null, this);
-
+        this.scoreConfig.fixedWidth = 0;
+        
         // display clock
         let clockConfig = {
             fontFamily: 'Courier',
@@ -91,11 +85,13 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         
+        // create timer to display
         this.timer = game.settings.gameTimer / 1000;
 
         this.clockRight = this.add.text(game.config.width - 140, 
             borderUISize + borderPadding*2, ':' + this.timer, clockConfig);
 
+        // call tick timer to decrease every second
         this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.tickTimer, callbackScope: this, loop: true });
             
         let bonusConfig = {
@@ -142,6 +138,13 @@ class Play extends Phaser.Scene {
             this.ship2.update();
             this.ship3.update();
         } 
+
+        if(this.timer == 0){
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or <- for Menu', this.scoreConfig).setOrigin(0.5);
+            this.gameOver = true;
+        }
+        
     }
 
     shipExplode(ship) {
@@ -153,8 +156,6 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score;
 
         // timer add
-        console.log(this.p1Score/100);
-        console.log(this.hunnit);
         if(this.timer > 0 && this.p1Score/100 >= this.hunnit){
             this.timer += 5;
             this.clockRight.text = ':' + this.timer;
