@@ -212,16 +212,17 @@ class Play extends Phaser.Scene {
 
         // timer add
         if(this.timer > 0 && this.totalScore/100 >= this.hunnit){
-            this.timer += 5;
+            this.timer += 2;
             this.clockRight.text = ':' + this.timer;
             this.timeBonus.x = ship.x - 60;
             this.timeBonus.y = ship.y;
-            this.timeBonus.text = '+5s';
+            this.timeBonus.text = '+2s';
             this.hunnit++;
         }
 
+        ship.reset();
+
         boom.on('animationcomplete', () => {
-            ship.reset();
             boom.destroy();
             this.timeBonus.text = '';
         });
