@@ -149,6 +149,8 @@ class Play extends Phaser.Scene {
         
         this.hunnit = 1;
 
+        // sfx list
+        this.explosions = ['sfx_explosion1', 'sfx_explosion2', 'sfx_explosion3', 'sfx_explosion4'];
     }
 
     update() {
@@ -224,7 +226,8 @@ class Play extends Phaser.Scene {
             this.timeBonus.text = '';
         });
 
-        this.sound.play('sfx_explosion');  
+        let index = Math.floor(Math.random() * this.explosions.length);
+        this.sound.play(this.explosions[index]);  
     }
 
     checkCollision(rocket, ship) {
