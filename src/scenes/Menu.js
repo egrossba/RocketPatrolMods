@@ -12,13 +12,13 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_explosion4', 'assets/explosion4.wav');
         this.load.audio('sfx_rocket', 'assets/rocket_shot.wav');
 
-        this.load.image('rocketPatrolMenu', 'assets/RocketPatrolMenu.png');
+        this.load.image('RocketPatrolMenu', 'assets/RocketPatrolMenu.png');
     }
 
     create() {
         
         this.rocketPatrolMenu = this.add.tileSprite(
-            0,30,0,0, 'rocketPatrolMenu'
+            0,30,0,0, 'RocketPatrolMenu'
         ).setOrigin(0,0);
 
         this.rocketPatrolMenu.displayWidth = game.config.width*1;
